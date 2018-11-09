@@ -47,6 +47,9 @@ border: 2px solid black;
 width: 400px;
 height: 70px;
 }
+.button2 {
+
+}
 .topnav1 input[type=text] {
   float: right;
   padding: 6px;
@@ -60,4 +63,9 @@ height: 70px;
   padding: 4px;
   margin-top: 8px;
   font-size: 17px;
+}
+.table {
+  overflow-y:auto;
+  max-height: 200px;
+  text-align: center;
 }

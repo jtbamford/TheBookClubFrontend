@@ -93,11 +93,6 @@ name into the sign up box to start your own!
 
 <input type="button" onClick={this.submit} value="Sign In"/>
 
-<div className="Routes">
-<hr />
-<Route exact path="/user" component={Userpage} />
-</div>
-
 </body>
 </div>
 
