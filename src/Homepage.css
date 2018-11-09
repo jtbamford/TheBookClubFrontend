@@ -1,0 +1,21 @@
+.Homepage {
+  text-align: center;
+  background-color: lightyellow;
+}
+
+.Homepage-body {
+  background-color: lightyellow;
+  min-height: 88vh;
+  font-size: calc(5px + 1.5vmin);
+  word-wrap: break-word;
+   width:800px;
+   margin: auto;
+}
+
+.Homepage-header {
+  background-color: lightyellow;
+  min-height: 10vh;
+  font-size: calc(20px + 2vmin);
+  display: flex;
+  flex-direction: column;
+}
