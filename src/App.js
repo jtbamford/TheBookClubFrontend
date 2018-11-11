@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
-import Userpage from './Userpage';
 import Homepage from './Homepage';
+import UserInfo from './UserInfo';
 import {
     BrowserRouter as Router,
     Route,
@@ -27,7 +27,7 @@ function RouterCode() {
 
             <hr />
             <Route exact path="/" component={Homepage} />
-            <Route path="/user" component={Userpage} />
+            <Route path="/user/:userID" component={UserInfo}/>
 
         </div>
     </Router>

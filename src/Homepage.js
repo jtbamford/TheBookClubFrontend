@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Homepage.css';
 import axios from 'axios';
-import Userpage from './Userpage';
+import UserInfo from './UserInfo';
 import {
     BrowserRouter as Router,
     Route,
@@ -15,19 +15,24 @@ import { withRouter } from 'react-router-dom';
 
 class Homepage extends Component {
 
-  getUser = () => {
-    var username;
-    if(username!=null) {
-    username=document.getElementById('usernameinput').value;
-    return username;
-    //{this.handleChange}
-
-    //axios.get('http://www.omdbapi.com/?t='+name+'&apikey=d3049279').then( response => {
-    //  this.setState({
-    //    Title: response.data.Title
-    //  })
+  constructor(){
+  super();
+  this.state = {
+    userdetails: ""
+  }
   }
 
+  getUser = () => {
+    var port=8081;
+    var username;
+    username=document.getElementById('usernameinput').value;
+    axios.get('http://localhost:'+port+'/api/Library/getUser', {
+      params: { username: username }
+    }).then(Response => {this.setState({
+      userdetails: Response.data.userID
+    })
+  })
+    return userdetails;
     }
 
    submit = () => {
@@ -41,17 +46,13 @@ class Homepage extends Component {
      })
 
    }
-
-     // add .then function to post that takes new user to their page
-
   }
 
 
   handlekeypress=(e)=> {
     if(e.key==='Enter') {
       console.log(this.getUser());
-      this.props.history.push("/user");
-      // write function which links to that persons page
+      this.props.history.push("/user/"+this.getUser());
     }
   }
 
