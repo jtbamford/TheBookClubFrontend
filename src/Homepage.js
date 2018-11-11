@@ -29,10 +29,10 @@ class Homepage extends Component {
     axios.get('http://localhost:'+port+'/api/Library/getUser', {
       params: { username: username }
     }).then(Response => {this.setState({
-      userdetails: Response.data.userID
+      userdetails: Response.data
     })
   })
-    return userdetails;
+    return this.state.userdetails;
     }
 
    submit = () => {
@@ -52,7 +52,7 @@ class Homepage extends Component {
   handlekeypress=(e)=> {
     if(e.key==='Enter') {
       console.log(this.getUser());
-      this.props.history.push("/user/"+this.getUser());
+      this.props.history.push("/user/"+this.getUser().userID);
     }
   }
 

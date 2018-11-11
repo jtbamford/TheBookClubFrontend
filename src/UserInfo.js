@@ -13,6 +13,10 @@ this.state = {
 }
 }
 
+getUsername=()=> {
+  // get username from userID in url here (or from homepage when move to this page)
+}
+
 
 addbook=()=> {
 var port=8081; // should use a prop here
@@ -28,7 +32,7 @@ axios.post('http://localhost:'+port+'/api/Library/createBookForUser', {
       author: document.getElementById('bookaddauthor').value,
       review: document.getElementById('bookaddreview').value,
       rating: document.getElementById('bookaddrating').value}
-      // need user ID also }
+      // need user also }
 }).then(Response => axios.get('http://localhost:'+port+'/api/Library/getBookOwnership').then(Response=> {
   this.setState({
     info:Response.data
@@ -41,7 +45,7 @@ deletebook=()=> {
 var port=8081;
 console.log("delete works");
 axios.get('http://localhost:'+port+'/api/Library/getBookOwnership', {
-  params: {userID: this.props.match.params.userID,
+  params: {username: getUsername(),
           title: document.getElementById('bookdeletetitle').value,
           author: document.getElementById('bookdeleteauthor').value}
 }).then( Response => {
@@ -57,6 +61,8 @@ render() {
     <header className="Userpage-header">
     Library {this.props.match.params.userID}
     </header>
+
+// replace this with a return to homepage button and carry out search again there
 
     <body className="Userpage-body">
 <div className="topnav">
