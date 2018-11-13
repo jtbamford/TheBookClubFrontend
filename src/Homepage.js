@@ -27,17 +27,14 @@ class Homepage extends Component {
     var username;
     username=document.getElementById('usernameinput').value;
   axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response => {
-    this.setState({
-  user: Response.data.userID
 
+  this.state.user = Response.data.userID;
 
-
-   })
-  console.log('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+username);
   console.log(this.state.user);
- })
+
 
   return this.state.user;
+  })
     }
 
    submit = () => {
