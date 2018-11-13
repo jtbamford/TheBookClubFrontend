@@ -9,12 +9,19 @@ class UserInfo extends Component {
 constructor(){
 super();
 this.state = {
-  info: ""
+  info: "",
+  username: ""
 }
 }
 
 getUsername=()=> {
-  // get username from userID in url here (or from homepage when move to this page)
+var port=8081
+//  axios.get('http://localhost:'+port+'/api/Library/getUser/'+{this.props.match.params.userID}).then(Response=>
+//  {this.setState({
+//    username : Response.data.username
+//  })
+//})
+return this.state.username;
 }
 
 
@@ -45,7 +52,7 @@ deletebook=()=> {
 var port=8081;
 console.log("delete works");
 axios.get('http://localhost:'+port+'/api/Library/getBookOwnership', {
-  params: {username: getUsername(),
+  params: {
           title: document.getElementById('bookdeletetitle').value,
           author: document.getElementById('bookdeleteauthor').value}
 }).then( Response => {
