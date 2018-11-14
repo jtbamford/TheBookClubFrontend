@@ -22,9 +22,11 @@ class Homepage extends Component {
   }
   }
 
+//const usernameprop = document.getElementById('usernameinput').value;
+
   getUser = () => {
-    var port=8081;
     var username;
+    var port=8081;
     username=document.getElementById('usernameinput').value;
   axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response => {
 
@@ -45,12 +47,13 @@ class Homepage extends Component {
 
    submit = () => {
      var username;
+     var port=8081;
      username=document.getElementById('makeuser').value;
      if(username!=null) {
      console.log(username);
      // change url to that of add user method
-     axios.post('http://localhost:8081/...', {
-       userName: username
+     axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createUser', {
+       username: username
      })
 
    }

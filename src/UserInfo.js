@@ -6,16 +6,19 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 class UserInfo extends Component {
 
-constructor(){
-super();
+constructor(props){
+super(props);
 this.state = {
-  info: "",
-  username: ""
+  info: ""
 }
 }
 
-getUser = (props) => {
-  this.setState({username:this.props.username});
+  handlekeypress=(e)=> {
+    if(e.key==='Enter') {
+      var username;
+      username=document.getElementById('usernameinput').value;
+      this.props.history.push("/user/"+username);
+    }
   }
 
 
@@ -60,14 +63,14 @@ render() {
   return (
     <div className = "Userpage">
     <header className="Userpage-header">
-    Library: this.state.username
+    Library: {this.props.match.params.username}
     </header>
 
 // replace this with a return to homepage button and carry out search again there
 
     <body className="Userpage-body">
 <div className="topnav">
-<input id="usernameinput" type="text"
+<input id="usernameinput" type="text" onKeyPress={this.handlekeypress}
   placeholder="Search..."
 /> <br/> <br/>
 </div>
@@ -86,7 +89,7 @@ placeholder="Author..."
 placeholder="Review..."
 /> <br/>
 <input id="bookaddrating" type="text"
-placeholder="Rating..."
+placeholder="Rating (1-5)..."
 /> <br/>
 <button class="button3" onClick={this.addbook}>Add</button>
 </div>
