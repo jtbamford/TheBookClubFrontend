@@ -14,15 +14,9 @@ this.state = {
 }
 }
 
-getUsername=()=> {
-var port=8081
-//  axios.get('http://localhost:'+port+'/api/Library/getUser/'+{this.props.match.params.userID}).then(Response=>
-//  {this.setState({
-//    username : Response.data.username
-//  })
-//})
-return this.state.username;
-}
+getUser = (props) => {
+  this.setState({username:this.props.username});
+  }
 
 
 addbook=()=> {
@@ -66,7 +60,7 @@ render() {
   return (
     <div className = "Userpage">
     <header className="Userpage-header">
-    Library {this.props.match.params.userID}
+    Library: this.state.username
     </header>
 
 // replace this with a return to homepage button and carry out search again there
