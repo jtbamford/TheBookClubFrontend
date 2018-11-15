@@ -9,54 +9,88 @@ class UserInfo extends Component {
 constructor(props){
 super(props);
 this.state = {
-  info: ""
+  info: "",
+  userID: "",
+  bookownershipID: ""
 }
+}
+
+_refreshPage() {
+  window.location.reload();
 }
 
   handlekeypress=(e)=> {
     if(e.key==='Enter') {
+      this._refreshPage();
       var username;
       username=document.getElementById('usernameinput').value;
       this.props.history.push("/user/"+username);
     }
   }
 
+  showBook(cell,row) {
+    return '\''+cell.title+'\''+' by '+cell.author;
+  }
+
+getAllBooksForUser=()=> {
+  axios.get('http://localhost:8081/TheBookClubJava/api/Library/getUserByUsername/'+this.props.match.params.username).then(Response=> {
+
+  this.setState({userID:Response.data.userID})
+
+  axios.get('http://localhost:8081/TheBookClubJava/api/Library/getAllBookOwnershipsForUser/'+this.state.userID).then(Response=> {
+  this.setState({
+    info:Response.data
+  })
+})
+})
+}
+
 
 addbook=()=> {
 var port=8081; // should use a prop here
 console.log("works");
 // here post to book TableHeaderColumn
-axios.post('http://localhost:'+port+'/api/Library/createBook', {
-  data: { title: document.getElementById('bookaddtitle').value ,
-    author: document.getElementById('bookaddauthor').value}
+axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createBook', {
+  title: document.getElementById('bookaddtitle').value ,
+    author: document.getElementById('bookaddauthor').value
 })
 // here post to bookforuser table
-axios.post('http://localhost:'+port+'/api/Library/createBookForUser', {
-  data: { title: document.getElementById('bookaddtitle').value ,
-      author: document.getElementById('bookaddauthor').value,
+axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+this.props.match.params.username).then(Response=> {
+
+  this.setState({userID:Response.data.userID})
+
+axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createBookForUser', {
+   book: {title: document.getElementById('bookaddtitle').value ,
+      author: document.getElementById('bookaddauthor').value},
       review: document.getElementById('bookaddreview').value,
-      rating: document.getElementById('bookaddrating').value}
-      // need user also }
-}).then(Response => axios.get('http://localhost:'+port+'/api/Library/getBookOwnership').then(Response=> {
+      rating: document.getElementById('bookaddrating').value,
+      userID: this.state.userID
+}).then(Response => axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getAllBookOwnershipsForUser/'+this.state.userID).then(Response=> {
   this.setState({
     info:Response.data
   })
-})
-);
+}))
+}
+)
 }
 
-deletebook=()=> {
+buttonFunction=(cell,row) => {
+//  this.setState({bookownershipID:row.bookownershipID});
+var param;
+param=row.bookownershipID;
+  //return '<button className="btn" type="submit" value={param} onClick={()=>this.deletebook(param)}>Delete</button>';
+  return '<th value={param} onClick={()=>this.handleSort(param)} >{param}</th>''
+}
+
+
+deletebook(param) {
 var port=8081;
-console.log("delete works");
-axios.get('http://localhost:'+port+'/api/Library/getBookOwnership', {
-  params: {
-          title: document.getElementById('bookdeletetitle').value,
-          author: document.getElementById('bookdeleteauthor').value}
-}).then( Response => {
-axios.delete('http://localhost:'+port+'/api/Library/deleteBookForUser', {
-  params: {bookownershipID: Response.data.bookownershipId}
-})
-})
+console.log(param);
+axios.delete('http://localhost:'+port+'/TheBookClubJava/api/Library/deleteBookForUser/'+this.state.bookownershipID)
+}
+
+componentDidMount() {
+  this.getAllBooksForUser();
 }
 
 render() {
@@ -66,8 +100,6 @@ render() {
     Library: {this.props.match.params.username}
     </header>
 
-// replace this with a return to homepage button and carry out search again there
-
     <body className="Userpage-body">
 <div className="topnav">
 <input id="usernameinput" type="text" onKeyPress={this.handlekeypress}
@@ -76,7 +108,7 @@ render() {
 </div>
 
 <Popup trigger={
-<button class="button">Add Book</button>
+<button className="btn">Add Book</button>
 }>
 <div>
 <input id="bookaddtitle" type="text"
@@ -91,14 +123,14 @@ placeholder="Review..."
 <input id="bookaddrating" type="text"
 placeholder="Rating (1-5)..."
 /> <br/>
-<button class="button3" onClick={this.addbook}>Add</button>
+<button className="btn" onClick={this.addbook}>Add</button>
 </div>
 </Popup>
 
 <br/> <br/> <br/>
 
 <Popup trigger={
-<button class="button">Delete Book</button>
+<button className="btn">Delete Book</button>
 }>
 <div>
 <input id="bookdeletetitle" type="text"
@@ -107,16 +139,17 @@ placeholder="Title..."
 <input id="bookdeleteauthor" type="text"
 placeholder="Author..."
 /> <br/>
-<button class="button3" onClick={this.deletebook}>Delete</button>
+<button className="btn" onClick={this.deletebook}>Delete</button>
 </div>
 </Popup>
 
 <div>
 <BootstrapTable data={this.state.info}>
-<TableHeaderColumn dataField='title' isKey>Title</TableHeaderColumn>
-<TableHeaderColumn dataField='author'>Author</TableHeaderColumn>
-<TableHeaderColumn dataField='review'>Author</TableHeaderColumn>
-<TableHeaderColumn dataField='rating'>Author</TableHeaderColumn>
+<TableHeaderColumn dataField='bookownershipID' isKey={true}>ID</TableHeaderColumn>
+<TableHeaderColumn dataField='book' dataFormat={this.showBook}>Book</TableHeaderColumn>
+<TableHeaderColumn dataField='review'>Review</TableHeaderColumn>
+<TableHeaderColumn dataField='rating'>Rating</TableHeaderColumn>
+<TableHeaderColumn dataField='button' dataFormat={this.buttonFunction}></TableHeaderColumn>
 </BootstrapTable>
 </div>
 
