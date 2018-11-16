@@ -27,7 +27,7 @@ function RouterCode() {
 
             <hr />
             <Route exact path="/" component={Homepage} />
-            <Route path="/user/:username" component={UserInfo}/>
+            <Route path="/user/:userID" component={UserInfo}/>
 
         </div>
     </Router>

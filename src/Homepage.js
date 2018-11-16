@@ -18,32 +18,11 @@ class Homepage extends Component {
   constructor(){
   super();
   this.state = {
-    user: ""
+    user: "",
+    userID: ""
   }
   }
 
-//const usernameprop = document.getElementById('usernameinput').value;
-
-  getUser = () => {
-    var username;
-    var port=8081;
-    username=document.getElementById('usernameinput').value;
-  axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response => {
-
-  this.state.user=Response.data.userID;
-
-  //this.setState({user:Response.data.userID});
-
- //Response.data.userID
-
-//console.log(this.state.user);
-//  return this.state.user;
-  })
-
-
-
-  console.log(this.state.user);
-    }
 
    submit = () => {
      var username;
@@ -64,7 +43,14 @@ class Homepage extends Component {
     if(e.key==='Enter') {
       var username;
       username=document.getElementById('usernameinput').value;
-      this.props.history.push("/user/"+username);
+      var port=8081;
+
+      axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response=> {
+
+        this.setState({userID:Response.data.userID})
+        this.props.history.push("/user/"+this.state.userID);
+      })
+
     }
   }
 

@@ -11,20 +11,33 @@ super(props);
 this.state = {
   info: "",
   userID: "",
-  bookownershipID: ""
+  username: ""
 }
 }
 
-_refreshPage() {
-  window.location.reload();
+getuser=()=>{
+  var port=8081;
+
+  axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUser/'+this.props.match.params.userID).then(Response=> {
+
+    this.setState({username:Response.data.username})
+  })
+
 }
 
   handlekeypress=(e)=> {
     if(e.key==='Enter') {
-      this._refreshPage();
+      var port=8081;
       var username;
       username=document.getElementById('usernameinput').value;
-      this.props.history.push("/user/"+username);
+
+      axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response=> {
+
+        this.setState({userID:Response.data.userID})
+        this.props.history.push("/user/"+this.state.userID);
+        this.getuser();
+        window.location.reload();
+      })
     }
   }
 
@@ -33,15 +46,10 @@ _refreshPage() {
   }
 
 getAllBooksForUser=()=> {
-  axios.get('http://localhost:8081/TheBookClubJava/api/Library/getUserByUsername/'+this.props.match.params.username).then(Response=> {
-
-  this.setState({userID:Response.data.userID})
-
-  axios.get('http://localhost:8081/TheBookClubJava/api/Library/getAllBookOwnershipsForUser/'+this.state.userID).then(Response=> {
+  axios.get('http://localhost:8081/TheBookClubJava/api/Library/getAllBookOwnershipsForUser/'+this.props.match.params.userID).then(Response=> {
   this.setState({
     info:Response.data
   })
-})
 })
 }
 
@@ -55,38 +63,56 @@ axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createBook', {
     author: document.getElementById('bookaddauthor').value
 })
 // here post to bookforuser table
-axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+this.props.match.params.username).then(Response=> {
+//axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+this.props.match.params.username).then(Response=> {
 
-  this.setState({userID:Response.data.userID})
+//  this.setState({userID:Response.data.userID})
 
 axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createBookForUser', {
    book: {title: document.getElementById('bookaddtitle').value ,
       author: document.getElementById('bookaddauthor').value},
       review: document.getElementById('bookaddreview').value,
       rating: document.getElementById('bookaddrating').value,
-      userID: this.state.userID
-}).then(Response => axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getAllBookOwnershipsForUser/'+this.state.userID).then(Response=> {
+      userID: this.props.match.params.userID
+}).then(Response => axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getAllBookOwnershipsForUser/'+this.props.match.params.userID).then(Response=> {
   this.setState({
     info:Response.data
   })
-}))
-}
+})
+//)}
 )
 }
 
-buttonFunction=(cell,row) => {
-//  this.setState({bookownershipID:row.bookownershipID});
-var param;
-param=row.bookownershipID;
-  //return '<button className="btn" type="submit" value={param} onClick={()=>this.deletebook(param)}>Delete</button>';
-  return '<th value={param} onClick={()=>this.handleSort(param)} >{param}</th>''
+updateUser=()=> {
+  var port=8081;
+
+  //axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+this.props.match.params.username).then(Response=> {
+
+  //  this.setState({userID:Response.data.userID})
+
+  axios.put('http://localhost:'+port+'/TheBookClubJava/api/Library/updateUser/'+this.props.match.params.userID, {
+    username: document.getElementById('usernameupdate').value,
+    userID:this.props.match.params.userID
+  }).then(window.location.reload())
+//})
 }
 
 
-deletebook(param) {
-var port=8081;
+buttonFunction=(cell,row)=> {
+//  this.setState({bookownershipID:row.bookownershipID});
+var param;
+param=row.bookownershipID;
 console.log(param);
-axios.delete('http://localhost:'+port+'/TheBookClubJava/api/Library/deleteBookForUser/'+this.state.bookownershipID)
+//this.deletebook();
+  return <button className="btn" onClick={()=>this.deletebook(param)}>Delete</button>;
+}
+
+
+deletebook=(param)=> {
+var port=8081;
+//console.log("hello");
+axios.delete('http://localhost:'+port+'/TheBookClubJava/api/Library/deleteBookForUser/'+param).then(Response=> {
+  window.location.reload()
+})
 }
 
 componentDidMount() {
@@ -97,7 +123,8 @@ render() {
   return (
     <div className = "Userpage">
     <header className="Userpage-header">
-    Library: {this.props.match.params.username}
+    {this.getuser()}
+    {this.state.username}'s Library
     </header>
 
     <body className="Userpage-body">
@@ -130,18 +157,16 @@ placeholder="Rating (1-5)..."
 <br/> <br/> <br/>
 
 <Popup trigger={
-<button className="btn">Delete Book</button>
+<button className="btn">Update Username</button>
 }>
 <div>
-<input id="bookdeletetitle" type="text"
-placeholder="Title..."
+<input id="usernameupdate" type="text"
+placeholder="Username..."
 /> <br/>
-<input id="bookdeleteauthor" type="text"
-placeholder="Author..."
-/> <br/>
-<button className="btn" onClick={this.deletebook}>Delete</button>
+<button className="btn" onClick={this.updateUser}>Update</button>
 </div>
 </Popup>
+
 
 <div>
 <BootstrapTable data={this.state.info}>
