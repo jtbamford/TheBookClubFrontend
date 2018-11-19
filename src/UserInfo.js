@@ -170,11 +170,11 @@ placeholder="Username..."
 
 <div>
 <BootstrapTable data={this.state.info}>
-<TableHeaderColumn dataField='bookownershipID' isKey={true}>ID</TableHeaderColumn>
-<TableHeaderColumn dataField='book' dataFormat={this.showBook}>Book</TableHeaderColumn>
-<TableHeaderColumn dataField='review'>Review</TableHeaderColumn>
-<TableHeaderColumn dataField='rating'>Rating</TableHeaderColumn>
-<TableHeaderColumn dataField='button' dataFormat={this.buttonFunction}></TableHeaderColumn>
+<TableHeaderColumn dataField='bookownershipID' tdStyle={ { whiteSpace: 'normal', width:'5%'} }  isKey={true}>ID</TableHeaderColumn>
+<TableHeaderColumn dataField='book' tdStyle={ { whiteSpace: 'normal', width:'40%' } }  dataFormat={this.showBook}>Book</TableHeaderColumn>
+<TableHeaderColumn dataField='review' tdStyle={ { whiteSpace: 'normal', width:'60%' } } >Review</TableHeaderColumn>
+<TableHeaderColumn dataField='rating' tdStyle={ { whiteSpace: 'normal', width:'10%' } } >Rating</TableHeaderColumn>
+<TableHeaderColumn dataField='button' tdStyle={ { whiteSpace: 'normal' , width:'20%' } }  dataFormat={this.buttonFunction}></TableHeaderColumn>
 </BootstrapTable>
 </div>
 
