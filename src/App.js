@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './App.css';
 import Homepage from './Homepage';
 import UserInfo from './UserInfo';
-import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 import {
     BrowserRouter as Router,
     Route,

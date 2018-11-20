@@ -3,6 +3,9 @@ import './Userpage.css';
 import axios from 'axios';
 import Popup from 'reactjs-popup';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import ReactDOM from 'react-dom';
+
+
 
 class UserInfo extends Component {
 
@@ -35,7 +38,9 @@ getuser=()=>{
 
         this.setState({userID:Response.data.userID})
         this.props.history.push("/user/"+this.state.userID);
-        this.getuser();
+  //      ReactDOM.render(table,document.getElementById('table'));
+  // try changing state within rendering so automatically updates component when pass state as prop
+        //this.getuser();
         window.location.reload();
       })
     }
@@ -85,15 +90,11 @@ axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createBookForU
 updateUser=()=> {
   var port=8081;
 
-  //axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+this.props.match.params.username).then(Response=> {
-
-  //  this.setState({userID:Response.data.userID})
-
   axios.put('http://localhost:'+port+'/TheBookClubJava/api/Library/updateUser/'+this.props.match.params.userID, {
     username: document.getElementById('usernameupdate').value,
     userID:this.props.match.params.userID
-  }).then(window.location.reload())
-//})
+  })
+
 }
 
 
@@ -119,20 +120,29 @@ componentDidMount() {
   this.getAllBooksForUser();
 }
 
+goBack=()=> {
+  this.props.history.push("/");
+}
+
 render() {
   return (
-    <div className = "Userpage">
+   <div className = "Userpage">
     <header className="Userpage-header">
     {this.getuser()}
     {this.state.username}'s Library
     </header>
 
     <body className="Userpage-body">
+
 <div className="topnav">
 <input id="usernameinput" type="text" onKeyPress={this.handlekeypress}
   placeholder="Search..."
 /> <br/> <br/>
 </div>
+
+<button className="btn float-right" onClick={this.goBack}>Back</button>
+
+
 
 <Popup trigger={
 <button className="btn">Add Book</button>
@@ -154,7 +164,7 @@ placeholder="Rating (1-5)..."
 </div>
 </Popup>
 
-<br/> <br/> <br/>
+<br/> <br/>
 
 <Popup trigger={
 <button className="btn">Update Username</button>
@@ -167,19 +177,25 @@ placeholder="Username..."
 </div>
 </Popup>
 
+<br/> <br/>
 
-<div>
-<BootstrapTable data={this.state.info}>
-<TableHeaderColumn dataField='bookownershipID' tdStyle={ { whiteSpace: 'normal', width:'5%'} }  isKey={true}>ID</TableHeaderColumn>
-<TableHeaderColumn dataField='book' tdStyle={ { whiteSpace: 'normal', width:'40%' } }  dataFormat={this.showBook}>Book</TableHeaderColumn>
-<TableHeaderColumn dataField='review' tdStyle={ { whiteSpace: 'normal', width:'60%' } } >Review</TableHeaderColumn>
-<TableHeaderColumn dataField='rating' tdStyle={ { whiteSpace: 'normal', width:'10%' } } >Rating</TableHeaderColumn>
-<TableHeaderColumn dataField='button' tdStyle={ { whiteSpace: 'normal' , width:'20%' } }  dataFormat={this.buttonFunction}></TableHeaderColumn>
+
+<div id="table">
+<BootstrapTable data={this.state.info} className="table table-striped">
+<TableHeaderColumn dataField='bookownershipID' width={'5%'} tdStyle={ { whiteSpace: 'normal', width:'5%' } } isKey={true}>ID</TableHeaderColumn>
+<TableHeaderColumn dataField='book' width={'25%'} tdStyle={ { whiteSpace: 'normal', width:'25%'} } dataFormat={this.showBook}>Book</TableHeaderColumn>
+<TableHeaderColumn dataField='review' width={'40%'} tdStyle={ { whiteSpace: 'normal', width:'40%'} }>Review</TableHeaderColumn>
+<TableHeaderColumn dataField='rating' width={'15%'} tdStyle={ { whiteSpace: 'normal', width:'15%'} }>Rating</TableHeaderColumn>
+<TableHeaderColumn dataField='button' width={'15%'} tdStyle={ { whiteSpace: 'normal', width:'15%'} } dataFormat={this.buttonFunction}></TableHeaderColumn>
 </BootstrapTable>
 </div>
 
+
+
+
 </body>
 </div>
+
 );
 }
 }

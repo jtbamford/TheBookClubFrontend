@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Homepage.css';
 import axios from 'axios';
 import UserInfo from './UserInfo';
+import Popup from 'reactjs-popup';
 import {
     BrowserRouter as Router,
     Route,
@@ -19,7 +20,8 @@ class Homepage extends Component {
   super();
   this.state = {
     user: "",
-    userID: ""
+    userID: "",
+    message: ""
   }
   }
 
@@ -29,11 +31,15 @@ class Homepage extends Component {
      var port=8081;
      username=document.getElementById('makeuser').value;
      if(username!=null) {
-     console.log(username);
+    // console.log(username);
      // change url to that of add user method
      axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createUser', {
        username: username
-     })
+     })//.then(Response =>{
+      //  this.setState({message:Response.data})
+      //  console.log("hello");
+     //}
+     //)
 
    }
   }
@@ -58,18 +64,17 @@ render() {
   return (
     <div className = "Homepage">
     <header className="Homepage-header">
-    <p>
     The Book Group
-    </p>
     </header>
 
-    <body className="Homepage-body">
+   <body className="Homepage-body">
+   <br/> <br/>
 <p>
 This is The Book Group. A place where you can record, share and update
 your reading history. Our aim is to allow users to share their reading experiences and gain inspiration
 for future reads from fellow book lovers. Just enter a name below to view a personal Library or type your
 name into the sign up box to start your own!
-</p>
+
 
 <br/> <br/>
 
@@ -90,11 +95,18 @@ name into the sign up box to start your own!
 	alt="Enter name to sign up"
   /> <br/> <br/>
 
-<input type="button" onClick={this.submit} value="Sign In"/>
 
+  <Popup trigger={
+<input type="button" onClick={this.submit} value="Sign In"/>
+}>
+<p>
+{this.state.message}
+</p>
+</Popup>
+
+</p>
 </body>
 </div>
-
 
 );
 }
