@@ -144,24 +144,22 @@ render() {
 
 
 
-<Popup trigger={
+<Popup  trigger={
 <button className="btn">Add Book</button>
 }>
-<div>
-<input id="bookaddtitle" type="text"
+<input id="bookaddtitle" type="text" style={{width:'100%'}}
 placeholder="Title..."
 /> <br/>
-<input id="bookaddauthor" type="text"
+<input id="bookaddauthor" type="text" style={{width:'100%'}}
 placeholder="Author..."
 /> <br/>
-<input id="bookaddreview" type="text"
+<input id="bookaddreview" type="text" style={{width:'100%'}}
 placeholder="Review..."
 /> <br/>
-<input id="bookaddrating" type="text"
+<input id="bookaddrating" type="text" style={{width:'100%'}}
 placeholder="Rating (1-5)..."
 /> <br/>
 <button className="btn" onClick={this.addbook}>Add</button>
-</div>
 </Popup>
 
 <br/> <br/>
