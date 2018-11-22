@@ -11,8 +11,7 @@ import {
 } from 'react-router-dom'
 import { withRouter } from 'react-router-dom';
 
-// need to use axios to make get/put etc. requests when press button here
-// into the axios get requests put the URL defined in my REST for the get
+
 
 class Homepage extends Component {
 
@@ -26,21 +25,29 @@ class Homepage extends Component {
   }
 
 
-   submit = () => {
+  submit = () => {
      var username;
      var port=8081;
+
      username=document.getElementById('makeuser').value;
      if(username!=null) {
     // console.log(username);
      // change url to that of add user method
-     axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createUser', {
+    axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createUser', {
        username: username
-     })//.then(Response =>{
-      //  this.setState({message:Response.data})
-      //  console.log("hello");
-     //}
-     //)
+     }).then(Response =>{
+       this.setState({message:Response.data.message})
+       if(this.state.message==="user has been successfully added") {
+       axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response=> {
 
+         this.setState({userID:Response.data.userID})
+         this.props.history.push("/user/"+this.state.userID);
+       }
+       )
+     }
+      //  this.setState({message:Response.data});
+     }
+     )
    }
   }
 
@@ -90,19 +97,15 @@ name into the sign up box to start your own!
 
 	Sign Up: <br/>
 
+
+
+
   <input id="makeuser" type="text"
 	placeholder="Enter name..."
 	alt="Enter name to sign up"
   /> <br/> <br/>
+  <button className="btn" onClick={this.submit}>Sign In</button>
 
-
-  <Popup trigger={
-<input type="button" onClick={this.submit} value="Sign In"/>
-}>
-<p>
-{this.state.message}
-</p>
-</Popup>
 
 </p>
 </body>
