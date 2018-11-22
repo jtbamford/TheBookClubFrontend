@@ -168,7 +168,7 @@ placeholder="Rating (1-5)..."
 <button className="btn">Update Username</button>
 }>
 <div>
-<input id="usernameupdate" type="text"
+<input id="usernameupdate" type="text" style={{width:'100%'}}
 placeholder="Username..."
 /> <br/>
 <button className="btn" onClick={this.updateUser}>Update</button>
