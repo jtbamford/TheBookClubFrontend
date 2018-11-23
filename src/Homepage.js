@@ -20,25 +20,26 @@ class Homepage extends Component {
   this.state = {
     user: "",
     userID: "",
-    message: ""
+    message: "",
+	IP:"http://35.205.78.142:",
+	port:"8083"
   }
   }
 
 
   submit = () => {
      var username;
-     var port=8081;
 
      username=document.getElementById('makeuser').value;
      if(username!=null) {
     // console.log(username);
      // change url to that of add user method
-    axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createUser', {
+    axios.post(this.state.IP+this.state.port+'/TheBookClubJava/api/Library/createUser', {
        username: username
      }).then(Response =>{
        this.setState({message:Response.data.message})
        if(this.state.message==="user has been successfully added") {
-       axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response=> {
+       axios.get(this.state.IP+this.state.port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response=> {
 
          this.setState({userID:Response.data.userID})
          this.props.history.push("/user/"+this.state.userID);
@@ -56,9 +57,8 @@ class Homepage extends Component {
     if(e.key==='Enter') {
       var username;
       username=document.getElementById('usernameinput').value;
-      var port=8081;
 
-      axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response=> {
+      axios.get(this.state.IP+this.state.port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response=> {
 
         this.setState({userID:Response.data.userID})
         this.props.history.push("/user/"+this.state.userID);

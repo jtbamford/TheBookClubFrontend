@@ -14,14 +14,15 @@ super(props);
 this.state = {
   info: "",
   userID: "",
-  username: ""
+  username: "",
+	IP:"http://35.205.78.142:",
+	port:"8083"
 }
 }
 
 getuser=()=>{
-  var port=8081;
 
-  axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUser/'+this.props.match.params.userID).then(Response=> {
+  axios.get(this.state.IP+this.state.port+'/TheBookClubJava/api/Library/getUser/'+this.props.match.params.userID).then(Response=> {
 
     this.setState({username:Response.data.username})
   })
@@ -30,11 +31,10 @@ getuser=()=>{
 
   handlekeypress=(e)=> {
     if(e.key==='Enter') {
-      var port=8081;
       var username;
       username=document.getElementById('usernameinput').value;
 
-      axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response=> {
+      axios.get(this.state.IP+this.state.port+'/TheBookClubJava/api/Library/getUserByUsername/'+username).then(Response=> {
 
         this.setState({userID:Response.data.userID})
         this.props.history.push("/user/"+this.state.userID);
@@ -51,7 +51,7 @@ getuser=()=>{
   }
 
 getAllBooksForUser=()=> {
-  axios.get('http://localhost:8081/TheBookClubJava/api/Library/getAllBookOwnershipsForUser/'+this.props.match.params.userID).then(Response=> {
+  axios.get(this.state.IP+this.state.port+'/TheBookClubJava/api/Library/getAllBookOwnershipsForUser/'+this.props.match.params.userID).then(Response=> {
   this.setState({
     info:Response.data
   })
@@ -60,10 +60,9 @@ getAllBooksForUser=()=> {
 
 
 addbook=()=> {
-var port=8081; // should use a prop here
 console.log("works");
 // here post to book TableHeaderColumn
-axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createBook', {
+axios.post(this.state.IP+this.state.port+'/TheBookClubJava/api/Library/createBook', {
   title: document.getElementById('bookaddtitle').value ,
     author: document.getElementById('bookaddauthor').value
 })
@@ -72,13 +71,13 @@ axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createBook', {
 
 //  this.setState({userID:Response.data.userID})
 
-axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createBookForUser', {
+axios.post(this.state.IP+this.state.port+'/TheBookClubJava/api/Library/createBookForUser', {
    book: {title: document.getElementById('bookaddtitle').value ,
       author: document.getElementById('bookaddauthor').value},
       review: document.getElementById('bookaddreview').value,
       rating: document.getElementById('bookaddrating').value,
       userID: this.props.match.params.userID
-}).then(Response => axios.get('http://localhost:'+port+'/TheBookClubJava/api/Library/getAllBookOwnershipsForUser/'+this.props.match.params.userID).then(Response=> {
+}).then(Response => axios.get(this.state.IP+this.state.port+'/TheBookClubJava/api/Library/getAllBookOwnershipsForUser/'+this.props.match.params.userID).then(Response=> {
   this.setState({
     info:Response.data
   })
@@ -88,9 +87,7 @@ axios.post('http://localhost:'+port+'/TheBookClubJava/api/Library/createBookForU
 }
 
 updateUser=()=> {
-  var port=8081;
-
-  axios.put('http://localhost:'+port+'/TheBookClubJava/api/Library/updateUser/'+this.props.match.params.userID, {
+  axios.put(this.state.IP+this.state.port+'/TheBookClubJava/api/Library/updateUser/'+this.props.match.params.userID, {
     username: document.getElementById('usernameupdate').value,
     userID:this.props.match.params.userID
   })
@@ -109,9 +106,8 @@ console.log(param);
 
 
 deletebook=(param)=> {
-var port=8081;
 //console.log("hello");
-axios.delete('http://localhost:'+port+'/TheBookClubJava/api/Library/deleteBookForUser/'+param).then(Response=> {
+axios.delete(this.state.IP+this.state.port+'/TheBookClubJava/api/Library/deleteBookForUser/'+param).then(Response=> {
   window.location.reload()
 })
 }
