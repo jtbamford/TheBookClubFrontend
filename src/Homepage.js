@@ -21,8 +21,8 @@ class Homepage extends Component {
     user: "",
     userID: "",
     message: "",
-	IP:"http://35.205.78.142:",
-	port:"8083"
+	IP:"http://localhost:",
+	port:"8081"
   }
   }
 

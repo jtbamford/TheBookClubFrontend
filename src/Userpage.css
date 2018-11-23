@@ -24,41 +24,10 @@
   width: 10vh;
 }
 
-p {
-font-size: calc(5px + 1.5vmin);
-color:white;
-}
-
-p1 {
-  position: absolute;
-  left: 150px;
-margin-top: 150px;
-margin-right: 100px;
-font-size: 23px;
-color: white;
-}
-
-.button {
-  position: absolute;
-  left: 150px;
-text-align: center;
-padding: 6px 32px;
-margin: 4px 2px;
-width: 150px;
-height: 40px;
-}
-.button1 {
-background-color: sienna;
-border: 2px solid black;
-width: 400px;
-height: 70px;
-}
-
 .topnav input[type=text] {
   position: absolute;
-  right: 150px;
-  padding: 4px;
-  margin-top: 8px;
+  top:7%;
+  right: 8%;
   font-size: 17px;
 }
 .table {

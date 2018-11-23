@@ -15,8 +15,8 @@ this.state = {
   info: "",
   userID: "",
   username: "",
-	IP:"http://35.205.78.142:",
-	port:"8083"
+	IP:"http://localhost:",
+	port:"8081"
 }
 }
 
