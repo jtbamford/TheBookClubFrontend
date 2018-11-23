@@ -140,7 +140,7 @@ render() {
 /> <br/> <br/>
 </div>
 
-<button className="btn float-right" onClick={this.goBack}>Back</button>
+<button className="btn float-right" id='right-panel-link' onClick={this.goBack}>Back</button>
 
 
 
